@@ -1,0 +1,8 @@
+build/
+build-*/
+
+*.elf
+*.hex
+*.bin
+*.uf2
+*.map
