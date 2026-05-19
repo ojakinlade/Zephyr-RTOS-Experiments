@@ -2,6 +2,7 @@ APP := .
 BOARD ?= rpi_pico2/rp2350a/m33
 BUILD_DIR ?= build
 ENV_SCRIPT ?= $(HOME)/.zinstaller/env.sh
+SHELL := bash
 
 .PHONY: help env boards build pristine clean flash
 

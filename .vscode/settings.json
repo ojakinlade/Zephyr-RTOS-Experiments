@@ -1,3 +1,8 @@
 {
-    "terminal.integrated.stickyScroll.enabled": false
+    "terminal.integrated.stickyScroll.enabled": false,
+    "zephyrExperiments.buildDir": "build",
+    "zephyrExperiments.openocdPath": "${userHome}/.pico-sdk/openocd/0.12.0+dev/openocd",
+    "zephyrExperiments.openocdScripts": "${userHome}/.pico-sdk/openocd/0.12.0+dev/scripts",
+    "zephyrExperiments.gdbPath": "/home/joseph/PowerLabs/Zephyr/toolchain/zephyr-sdk-1.0.1/gnu/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb",
+    "zephyrExperiments.svdFile": "${userHome}/.pico-sdk/sdk/2.1.1/src/rp2350/hardware_regs/RP2350.svd"
 }
