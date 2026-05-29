@@ -1,0 +1,52 @@
+/ {
+     chosen {
+             zephyr,console = &cdc_acm_uart0;
+	     zephyr,shell-uart = &cdc_acm_uart0;
+     };
+
+     aliases {
+             relay = &relay_0;
+	     modbus = &modbus_server;
+     };
+
+     relays {
+	compatible = "gpio-leds";
+
+	relay_0: relay_0 {
+		label = "Relay 0";
+		gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+	};
+     };
+};
+
+&pinctrl {
+	uart1_default: uart1_default {
+		group1 {
+			pinmux = <UART1_TX_P8>;
+		};
+
+		group2 {
+			pinmux = <UART1_RX_P9>;
+			input-enable;
+		};
+	};
+};
+
+&uart1 {
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+	status = "okay";
+	current-speed = <9600>;
+
+	modbus_server: modbus {
+		status = "okay";
+		compatible = "zephyr,modbus-serial";
+		de-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
