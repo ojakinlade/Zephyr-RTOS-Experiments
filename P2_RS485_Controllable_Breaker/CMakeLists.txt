@@ -9,6 +9,8 @@ target_include_directories(app PRIVATE include)
 
 target_sources(app PRIVATE
 	src/main.c
-	src/relay.c
-	src/modbus_server.c
+	src/system_registers.c
 )
+
+add_subdirectory(modbus)
+add_subdirectory(devices)
