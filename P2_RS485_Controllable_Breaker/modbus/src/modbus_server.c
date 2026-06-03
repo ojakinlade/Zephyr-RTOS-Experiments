@@ -8,7 +8,7 @@
 
 LOG_MODULE_REGISTER(modbus_server, LOG_LEVEL_INF);
 
-#define MODBUS_NODE DT_ALIAS(modbus)
+#define MODBUS_NODE DT_ALIAS(modbus_server)
 #define MODBUS_MAX_REGISTER_HANDLERS 8
 
 static const struct modbus_register_handler
