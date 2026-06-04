@@ -6,8 +6,8 @@
 
      aliases {
              relay = &relay_0;
-	     modbus_server = &modbus_server;
-	     modbus_client = &modbus_client;
+	     modbus-server = &modbus_server;
+	     modbus-client = &modbus_client;
      };
 
      relays {

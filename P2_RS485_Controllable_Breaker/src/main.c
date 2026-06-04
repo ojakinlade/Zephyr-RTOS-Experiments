@@ -1,9 +1,11 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
+#include "modbus_client.h"
 #include "modbus_server.h"
 #include "relay_controller.h"
 #include "system_registers.h"
+#include "sht20.h"
 
 LOG_MODULE_REGISTER(app, LOG_LEVEL_INF);
 
@@ -29,6 +31,12 @@ int main(void)
 		return 0;
 	}
 
+	ret = modbus_client_init();
+	if (ret < 0) {
+		LOG_ERR("Failed to initialize Modbus client: %d", ret);
+		return 0;
+	}
+
 	ret = modbus_server_init();
 	if (ret < 0) {
 		LOG_ERR("Failed to initialize Modbus server: %d", ret);
@@ -37,7 +45,15 @@ int main(void)
 
 	LOG_INF("System ready");
 
+	char json[160];
+
 	while (1) {
+		int ret = sht20_get_data(1, json, sizeof(json));
+		if (ret < 0) {
+			LOG_ERR("Failed to get SHT20 data: %d", ret);
+		} else {
+			LOG_INF("SHT20 Data: %s", json);
+		}
 		k_sleep(K_SECONDS(1));
 	}
 
