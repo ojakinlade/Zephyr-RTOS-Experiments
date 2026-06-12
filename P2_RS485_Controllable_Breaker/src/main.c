@@ -48,7 +48,7 @@ int main(void)
 	char json[160];
 
 	while (1) {
-		int ret = sht20_get_data(1, json, sizeof(json));
+		int ret = sht20_get_data(33, json, sizeof(json));
 		if (ret < 0) {
 			LOG_ERR("Failed to get SHT20 data: %d", ret);
 		} else {

@@ -50,7 +50,7 @@
 	status = "okay";
 	current-speed = <9600>;
 
-	modbus_client: modbus {
+	modbus_client: modbus-client {
 		status = "okay";
 		compatible = "zephyr,modbus-serial";
 		de-gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
@@ -63,7 +63,7 @@
 	status = "okay";
 	current-speed = <9600>;
 
-	modbus_server: modbus {
+	modbus_server: modbus-server {
 		status = "okay";
 		compatible = "zephyr,modbus-serial";
 		de-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
