@@ -65,24 +65,24 @@ int sht20_read_data(uint8_t unit_id, struct sht20_param *data, bool *error_flag)
 		*error_flag = false;
 	}
 
-	ret = sht20_read_calibration(unit_id, &calib);
-	if (ret < 0) {
-		return ret;
-	}
+	// ret = sht20_read_calibration(unit_id, &calib);
+	// if (ret < 0) {
+	// 	return ret;
+	// }
 
-	if (!is_calibration_valid(calib.temp_calib) ||
-	    !is_calibration_valid(calib.hum_calib)) {
-		if (error_flag != NULL) {
-			*error_flag = true;
-		}
+	// if (!is_calibration_valid(calib.temp_calib) ||
+	//     !is_calibration_valid(calib.hum_calib)) {
+	// 	if (error_flag != NULL) {
+	// 		*error_flag = true;
+	// 	}
 
-		ret = sht20_reset_calibration(unit_id);
-		if (ret < 0) {
-			return ret;
-		}
+	// 	ret = sht20_reset_calibration(unit_id);
+	// 	if (ret < 0) {
+	// 		return ret;
+	// 	}
 
-		k_msleep(SHT20_DELAY_PERIOD_MS);
-	}
+	// 	k_msleep(SHT20_DELAY_PERIOD_MS);
+	// }
 
 	ret = modbus_client_read_input_regs(unit_id,
 					    SHT20_TEMPERATURE_ADDR,
@@ -92,20 +92,20 @@ int sht20_read_data(uint8_t unit_id, struct sht20_param *data, bool *error_flag)
 		return ret;
 	}
 
-	k_msleep(SHT20_DELAY_PERIOD_MS);
+	// k_msleep(SHT20_DELAY_PERIOD_MS);
 
-	ret = modbus_client_read_input_regs(unit_id,
-					    SHT20_HUMIDITY_ADDR,
-					    &raw_humidity,
-					    1);
-	if (ret < 0) {
-		return ret;
-	}
+	// ret = modbus_client_read_input_regs(unit_id,
+	// 				    SHT20_HUMIDITY_ADDR,
+	// 				    &raw_humidity,
+	// 				    1);
+	// if (ret < 0) {
+	// 	return ret;
+	// }
 
-	data->temperature = raw_temperature * 0.1f;
-	data->humidity = raw_humidity * 0.1f;
+	// data->temperature = raw_temperature * 0.1f;
+	// data->humidity = raw_humidity * 0.1f;
 
-	return 0;
+	// return 0;
 }
 
 int sht20_get_data(uint8_t unit_id, char *buffer, size_t buffer_size)
@@ -123,6 +123,11 @@ int sht20_get_data(uint8_t unit_id, char *buffer, size_t buffer_size)
 		return -ERANGE;
 	}
 
+  // printf("SHT20 Data - Temperature: %.2f C, Humidity: %.2f %%",
+	// 	(double)data.temperature, (double)data.humidity);
+	// sprintf(buffer, "{\"temperature\":%.2f,\"humidity\":%.2f,\"error\":%s}",
+	// 	(double)data.temperature, (double)data.humidity,
+	// 	error_flag ? "true" : "false");
 	return sht20_format_json(&data, unit_id, buffer, buffer_size);
 }
 

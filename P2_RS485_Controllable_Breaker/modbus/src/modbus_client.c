@@ -14,7 +14,7 @@ static int client_iface = -1;
 
 static const struct modbus_iface_param client_param = {
 	.mode = MODBUS_MODE_RTU,
-	.rx_timeout = 50000,
+	.rx_timeout = 5000000,
 	.serial = {
 		.baud = 9600,
 		.parity = UART_CFG_PARITY_NONE,
