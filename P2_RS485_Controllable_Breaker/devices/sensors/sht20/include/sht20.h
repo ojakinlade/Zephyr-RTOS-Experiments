@@ -13,8 +13,8 @@
 #define SHT20_CALIBRATION_VALUE 0U
 
 struct sht20_param {
-	float temperature;
-	float humidity;
+	uint16_t temperature;
+	uint16_t humidity;
 };
 
 struct sht20_calib {

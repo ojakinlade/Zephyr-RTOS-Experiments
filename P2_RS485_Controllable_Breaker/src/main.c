@@ -56,7 +56,7 @@ int main(void)
 		} else {
 			LOG_INF("SHT20 Data: %s", json);
 		}
-		// k_sleep(K_SECONDS(1));
+		k_sleep(K_SECONDS(1));
 		// int ret = modbus_client_read_input_regs(33, 0, data, 3);
 		// if (ret < 0) {
 		// 	LOG_ERR("Failed to read Modbus input registers: %d", ret);
