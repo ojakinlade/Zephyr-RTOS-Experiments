@@ -60,7 +60,7 @@ static const struct modbus_iface_param server_param = {
 	.mode = MODBUS_MODE_RTU,
 	.server = {
 		.user_cb = &mbs_cbs,
-		.unit_id = 1,
+		.unit_id = 50,
 	},
 	.serial = {
 		.baud = 9600,

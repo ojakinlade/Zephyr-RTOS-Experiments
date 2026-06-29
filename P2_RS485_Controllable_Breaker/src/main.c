@@ -9,9 +9,13 @@
 
 LOG_MODULE_REGISTER(app, LOG_LEVEL_INF);
 
+#define SHT20_UNIT_ID 33U
+#define TEMPERATURE_THRESHOLD_X10 300U
+
 int main(void)
 {
 	int ret;
+	struct sht20_param sht20_data;
 
 	ret = relay_controller_init();
 	if (ret < 0) {
@@ -47,14 +51,19 @@ int main(void)
 
 	char json[1024];
 
-	uint16_t data[3];
-
 	while (1) {
-		ret = sht20_get_data(33, json, sizeof(json));
+		ret = sht20_read_data(SHT20_UNIT_ID, &sht20_data);
 		if (ret < 0) {
 			LOG_ERR("Failed to get SHT20 data: %d", ret);
 		} else {
+			system_registers_set_threshold_alarm(
+				sht20_data.temperature <= TEMPERATURE_THRESHOLD_X10);
+			ret = sht20_format_json(&sht20_data, SHT20_UNIT_ID, json, sizeof(json));
+			if (ret < 0) {
+				LOG_ERR("Failed to format SHT20 data: %d", ret);
+			} else {
 			LOG_INF("SHT20 Data: %s", json);
+			}
 		}
 		k_sleep(K_SECONDS(1));
 		// int ret = modbus_client_read_input_regs(33, 0, data, 3);

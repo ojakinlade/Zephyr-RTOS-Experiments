@@ -1,5 +1,4 @@
 #include <errno.h>
-#include <math.h>
 #include <stdio.h>
 
 #include "level_sensor.h"
@@ -22,11 +21,11 @@ int level_sensor_read_data(uint8_t unit_id, struct level_sensor_param *data)
 		return ret;
 	}
 
-	data->level = (float)raw_level;
+	data->level = raw_level;
 	return 0;
 }
 
-int level_sensor_get_level(uint8_t unit_id, float *level)
+int level_sensor_get_level(uint8_t unit_id, uint16_t *level)
 {
 	struct level_sensor_param data;
 	int ret;
@@ -67,11 +66,7 @@ bool level_sensor_validate_data(const struct level_sensor_param *data)
 		return false;
 	}
 
-	if (isnan(data->level)) {
-		return false;
-	}
-
-	return data->level >= 0.0f;
+	return true;
 }
 
 int level_sensor_format_json(const struct level_sensor_param *data,
@@ -86,6 +81,6 @@ int level_sensor_format_json(const struct level_sensor_param *data,
 	return snprintf(buffer, buffer_size,
 			"{\"meter_type\":\"level\",\"model\":\"level_sensor\","
 			"\"ID\":\"meter%u\",\"channels\":[{\"ID\":\"ch1\","
-			"\"level\":\"%.2f\"}]}",
-			unit_id, (double)data->level);
+			"\"level\":\"%u\"}]}",
+			unit_id, data->level);
 }

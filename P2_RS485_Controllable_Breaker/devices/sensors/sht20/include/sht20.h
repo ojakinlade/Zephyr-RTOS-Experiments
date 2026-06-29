@@ -22,12 +22,12 @@ struct sht20_calib {
 	uint16_t hum_calib;
 };
 
-int sht20_read_data(uint8_t unit_id, struct sht20_param *data, bool *error_flag);
+int sht20_read_data(uint8_t unit_id, struct sht20_param *data);
 int sht20_get_data(uint8_t unit_id, char *buffer, size_t buffer_size);
 bool sht20_validate_data(const struct sht20_param *data);
 int sht20_format_json(const struct sht20_param *data,
-		      uint8_t unit_id,
-		      char *buffer,
-		      size_t buffer_size);
+		      						uint8_t unit_id,
+		      						char *buffer,
+		      						size_t buffer_size);
 
 #endif /* SHT20_H_ */
