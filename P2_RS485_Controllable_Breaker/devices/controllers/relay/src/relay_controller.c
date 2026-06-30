@@ -8,8 +8,10 @@
 LOG_MODULE_REGISTER(relay_controller, LOG_LEVEL_INF);
 
 #define RELAY_NODE DT_ALIAS(relay)
+#define LED_NODE DT_ALIAS(led)
 
 static const struct gpio_dt_spec relay = GPIO_DT_SPEC_GET(RELAY_NODE, gpios);
+static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 static bool relay_state;
 
 static int relay_read_holding_reg(uint16_t offset, uint16_t *value)
@@ -53,9 +55,20 @@ int relay_controller_init(void)
 		return -ENODEV;
 	}
 
+	if (!gpio_is_ready_dt(&led)) {
+		LOG_ERR("LED device is not ready");
+		return -ENODEV;
+	}
+
 	ret = gpio_pin_configure_dt(&relay, GPIO_OUTPUT_INACTIVE);
 	if (ret < 0) {
 		LOG_ERR("Failed to configure relay: %d", ret);
+		return ret;
+	}
+
+	ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
+	if (ret < 0) {
+		LOG_ERR("Failed to configure LED: %d", ret);
 		return ret;
 	}
 
@@ -72,6 +85,12 @@ int relay_controller_set(bool on)
 	ret = gpio_pin_set_dt(&relay, on);
 	if (ret < 0) {
 		LOG_ERR("Failed to set relay state: %d", ret);
+		return ret;
+	}
+
+	ret = gpio_pin_set_dt(&led, on);
+	if (ret < 0) {
+		LOG_ERR("Failed to set LED state: %d", ret);
 		return ret;
 	}
 

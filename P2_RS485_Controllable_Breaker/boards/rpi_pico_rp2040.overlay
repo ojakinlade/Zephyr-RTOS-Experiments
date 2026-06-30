@@ -6,6 +6,7 @@
 
      aliases {
              relay = &relay_0;
+	     led = &relay_1;
 	     modbus-server = &modbus_server;
 	     modbus-client = &modbus_client;
      };
@@ -15,6 +16,11 @@
 
 	relay_0: relay_0 {
 		label = "Relay 0";
+		gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
+	};
+
+	relay_1: relay_1 {
+		label = "Onboard LED";
 		gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
 	};
      };
