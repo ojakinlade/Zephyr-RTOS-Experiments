@@ -21,7 +21,7 @@
 
 	relay_1: relay_1 {
 		label = "Onboard LED";
-		gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+		gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
 	};
      };
 };
