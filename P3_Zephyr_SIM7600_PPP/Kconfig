@@ -1,0 +1,20 @@
+mainmenu "SIM7600 PPP MQTT demo"
+
+config APP_MQTT_BROKER_HOSTNAME
+	string "MQTT broker hostname"
+	default "broker.hivemq.com"
+
+config APP_MQTT_BROKER_PORT
+	int "MQTT broker port"
+	default 1883
+	range 1 65535
+
+config APP_MQTT_CLIENT_ID
+	string "MQTT client identifier"
+	default "pico-sim7600-demo"
+
+config APP_MQTT_TOPIC
+	string "MQTT publish topic"
+	default "zephyr/pico/sim7600/test"
+
+source "Kconfig.zephyr"

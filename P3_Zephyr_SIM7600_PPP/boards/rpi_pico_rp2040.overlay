@@ -1,0 +1,86 @@
+/ {
+	chosen {
+		zephyr,console = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+	};
+
+	aliases {
+		relay = &relay_0;
+		led = &relay_1;
+		modem = &sim7600_modem;
+		modem-uart = &uart0;
+		sim7600-power = &sim7600_power;
+	};
+
+	relays {
+	compatible = "gpio-leds";
+
+	relay_0: relay_0 {
+		label = "Relay 0";
+		gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
+	};
+
+	relay_1: relay_1 {
+		label = "Onboard LED";
+		gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+	};
+	};
+
+	sim7600_power: sim7600_power {
+		compatible = "gpio-leds";
+		power_ctrl: power_ctrl {
+			gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+			label = "SIM7600 Power Control";
+		};
+	};
+};
+
+&pinctrl {
+	uart0_default: uart0_default {
+		group1 {
+			pinmux = <UART0_TX_P16>;
+		};
+
+		group2 {
+			pinmux = <UART0_RX_P17>;
+			input-enable;
+		};
+	};
+
+	uart1_default: uart1_default {
+		group1 {
+			pinmux = <UART1_TX_P8>;
+		};
+
+		group2 {
+			pinmux = <UART1_RX_P9>;
+			input-enable;
+		};
+	};
+};
+
+&uart0 {
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-names = "default";
+	status = "okay";
+	current-speed = <115200>;
+
+	sim7600_modem: modem {
+		status = "okay";
+		compatible = "simcom,sim7600";
+		mdm-power-gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&uart1 {
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+	status = "disabled";
+	current-speed = <9600>;
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};

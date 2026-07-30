@@ -1,0 +1,13 @@
+# Copyright (C) 2025 Olivier Lalonde
+# SPDX-License-Identifier: Apache-2.0
+
+description: Simcom SIM7600 modem
+
+compatible: "simcom,sim7600"
+
+include: zephyr,cellular-modem-device.yaml
+
+properties:
+  mdm-power-gpios:
+    type: phandle-array
+    required: true
