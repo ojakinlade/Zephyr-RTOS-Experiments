@@ -11,7 +11,7 @@
 LOG_MODULE_REGISTER(app, LOG_LEVEL_INF);
 
 #define SHT20_UNIT_ID 33U
-#define PD195Z_E31_UNIT_ID 11U
+#define PD195Z_E31_UNIT_ID 1U
 #define TEMPERATURE_THRESHOLD_X10 300U
 
 int main(void)
@@ -44,11 +44,11 @@ int main(void)
 		return 0;
 	}
 
-	ret = modbus_server_init();
-	if (ret < 0) {
-		LOG_ERR("Failed to initialize Modbus server: %d", ret);
-		return 0;
-	}
+	// ret = modbus_server_init();
+	// if (ret < 0) {
+	// 	LOG_ERR("Failed to initialize Modbus server: %d", ret);
+	// 	return 0;
+	// }
 
 	LOG_INF("System ready");
 
