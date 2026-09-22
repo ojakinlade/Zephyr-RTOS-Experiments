@@ -1,6 +1,6 @@
 APP := .
-# BOARD ?= rpi_pico2/rp2350a/m33
-BOARD ?= rpi_pico/rp2040
+BOARD ?= rpi_pico2/rp2350a/m33
+# BOARD ?= rpi_pico/rp2040
 BUILD_DIR ?= build
 ENV_SCRIPT ?= $(HOME)/.zinstaller/env.sh
 SHELL := bash

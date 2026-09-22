@@ -1,0 +1,88 @@
+/ {
+     chosen {
+             zephyr,console = &uart0;
+	     zephyr,shell-uart = &uart0;
+     };
+
+     aliases {
+             relay = &relay_0;
+	     led = &relay_1;
+	     modbus-server = &modbus_server;
+	     modbus-client = &modbus_client;
+     };
+
+     relays {
+	compatible = "gpio-leds";
+
+	relay_0: relay_0 {
+		label = "Relay 0";
+		gpios = <&gpio0 4 GPIO_ACTIVE_LOW>;
+	};
+
+	relay_1: relay_1 {
+		label = "Onboard LED";
+		gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+	};
+     };
+};
+
+&pinctrl {
+	uart0_default: uart0_default {
+		group1 {
+			pinmux = <UART0_TX_P16>;
+		};
+
+		group2 {
+			pinmux = <UART0_RX_P17>;
+			input-enable;
+		};
+	};
+
+	uart1_default: uart1_default {
+		group1 {
+			pinmux = <UART1_TX_P8>;
+		};
+
+		group2 {
+			pinmux = <UART1_RX_P9>;
+			input-enable;
+		};
+	};
+};
+
+&uart0 {
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-names = "default";
+	status = "okay";
+	current-speed = <115200>;
+
+	// modbus_client: modbus-client {
+	// 	status = "okay";
+	// 	compatible = "zephyr,modbus-serial";
+	// 	de-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+	// };
+	modbus_server: modbus-server {
+		status = "disabled";
+		compatible = "zephyr,modbus-serial";
+		de-gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&uart1 {
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+	status = "okay";
+	current-speed = <9600>;
+
+	modbus_client: modbus-client {
+		status = "okay";
+		compatible = "zephyr,modbus-serial";
+		de-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
