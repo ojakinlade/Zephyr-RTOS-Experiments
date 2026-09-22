@@ -1,0 +1,129 @@
+/*
+ * Copyright 2021 The Chromium OS Authors
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+#include <st/g0/stm32g081Xb.dtsi>
+#include <st/g0/stm32g081cbtx-pinctrl.dtsi>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "PAI Generator Dispatch Controller";
+	compatible = "pai,gdc";
+
+	chosen {
+		zephyr,console = &usart1;
+		zephyr,shell-uart = &usart1;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led_red: led-red {
+			gpios = <&gpiob 13 GPIO_ACTIVE_LOW>;
+			label = "RGB red";
+		};
+
+		led_green: led-green {
+			gpios = <&gpiob 14 GPIO_ACTIVE_LOW>;
+			label = "RGB green";
+		};
+
+		led_blue: led-blue {
+			gpios = <&gpiob 15 GPIO_ACTIVE_LOW>;
+			label = "RGB blue";
+		};
+	};
+
+	relays {
+		compatible = "gpio-leds";
+
+		relay_0: relay-0 {
+			gpios = <&gpiob 3 GPIO_ACTIVE_HIGH>;
+			label = "Relay";
+		};
+	};
+
+	aliases {
+		relay = &relay_0;
+		led = &led_green;
+		led0 = &led_red;
+		led1 = &led_green;
+		led2 = &led_blue;
+		watchdog0 = &iwdg;
+		volt-sensor0 = &vref;
+		volt-sensor1 = &vbat;
+		modbus-server = &modbus_server;
+		modbus-client = &modbus_client;
+	};
+};
+
+&clk_hsi {
+	status = "okay";
+};
+
+&pll {
+	div-m = <1>;
+	mul-n = <8>;
+	div-p = <2>;
+	div-q = <2>;
+	div-r = <2>;
+	clocks = <&clk_hsi>;
+	status = "okay";
+};
+
+&rcc {
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(64)>;
+	ahb-prescaler = <1>;
+	apb1-prescaler = <1>;
+};
+
+&usart1 {
+	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+&usart2 {
+	pinctrl-0 = <&usart2_tx_pa2 &usart2_rx_pa3>;
+	pinctrl-names = "default";
+	current-speed = <9600>;
+	status = "okay";
+
+	modbus_client: modbus-client {
+		status = "okay";
+		compatible = "zephyr,modbus-serial";
+		de-gpios = <&gpioa 4 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&usart3 {
+	pinctrl-0 = <&usart3_tx_pb10 &usart3_rx_pb11>;
+	pinctrl-names = "default";
+	current-speed = <9600>;
+	status = "okay";
+
+	modbus_server: modbus-server {
+		status = "okay";
+		compatible = "zephyr,modbus-serial";
+		de-gpios = <&gpiob 12 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&iwdg {
+	status = "okay";
+};
+
+&vref {
+	status = "okay";
+};
+
+&vbat {
+	status = "okay";
+};

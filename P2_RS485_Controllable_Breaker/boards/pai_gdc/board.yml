@@ -1,0 +1,6 @@
+board:
+  name: pai_gdc
+  full_name: PAI Generator Dispatch Controller
+  vendor: st
+  socs:
+    - name: stm32g081xx

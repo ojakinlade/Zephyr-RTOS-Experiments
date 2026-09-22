@@ -1,6 +1,8 @@
 APP := .
 BOARD ?= rpi_pico2/rp2350a/m33
 # BOARD ?= rpi_pico/rp2040
+# BOARD ?= pai_gdc
+BOARD_ROOT ?= $(CURDIR)
 BUILD_DIR ?= build
 ENV_SCRIPT ?= $(HOME)/.zinstaller/env.sh
 SHELL := bash
@@ -19,25 +21,27 @@ help:
 	@echo "  make flash               Flash current build"
 	@echo "  make clean               Remove $(BUILD_DIR)"
 	@echo "  BOARD_CONF=<file>        Append a board-specific Kconfig fragment"
+	@echo "  BOARD_ROOT=<path>        Search this directory for custom boards"
 	@echo "  CMAKE_EXTRA_ARGS=<args>  Pass extra CMake args after west build --"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make build"
 	@echo "  make build BOARD=rpi_pico"
 	@echo "  make pristine BOARD=rpi_pico2/rp2350a/m33"
+	@echo "  make pristine BOARD=pai_gdc BUILD_DIR=build/pai_gdc"
 	@echo "  make build BOARD_CONF=boards/rpi_pico.conf"
 
 env:
 	. $(ENV_SCRIPT) && python --version && west --version
 
 boards:
-	. $(ENV_SCRIPT) && west boards
+	. $(ENV_SCRIPT) && west boards --board-root "$(BOARD_ROOT)"
 
 build:
-	. $(ENV_SCRIPT) && west build -b $(BOARD) -d $(BUILD_DIR) $(APP) -- $(EXTRA_CONF_ARG) $(CMAKE_EXTRA_ARGS)
+	. $(ENV_SCRIPT) && west build -b $(BOARD) -d $(BUILD_DIR) $(APP) -- -DBOARD_ROOT="$(BOARD_ROOT)" $(EXTRA_CONF_ARG) $(CMAKE_EXTRA_ARGS)
 
 pristine:
-	. $(ENV_SCRIPT) && west build -p always -b $(BOARD) -d $(BUILD_DIR) $(APP) -- $(EXTRA_CONF_ARG) $(CMAKE_EXTRA_ARGS)
+	. $(ENV_SCRIPT) && west build -p always -b $(BOARD) -d $(BUILD_DIR) $(APP) -- -DBOARD_ROOT="$(BOARD_ROOT)" $(EXTRA_CONF_ARG) $(CMAKE_EXTRA_ARGS)
 
 clean:
 	rm -rf $(BUILD_DIR)
